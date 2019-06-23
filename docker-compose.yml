@@ -8,8 +8,6 @@ services:
       - "5000"
       - "5001"
       - "22"
-    networks:
-      - swarm-network
     command: python o4s/racer1.py
     deploy:
       restart_policy:
@@ -23,8 +21,6 @@ services:
       - "5000"
       - "5001"
       - "22"
-    networks:
-      - swarm-network
     command: python o4s/racer2.py
     deploy:
       restart_policy:
@@ -38,17 +34,9 @@ services:
       - "5000"
       - "5001"
       - "22"
-    networks:
-      - swarm-network
     depends_on:
       - racer2
       - racer1
     deploy:
       restart_policy:
         condition: on-failure
-
-
-
-networks:
-  swarm-network:
-    external: False
