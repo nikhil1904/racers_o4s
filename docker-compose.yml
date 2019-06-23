@@ -1,0 +1,54 @@
+version: '3'
+services:
+  racer1:
+    image: racer
+    volumes:
+      - .:/efs/
+    ports:
+      - "5000"
+      - "5001"
+      - "22"
+    networks:
+      - swarm-network
+    command: python o4s/racer1.py
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  racer2:
+    image: racer
+    volumes:
+      - .:/efs/
+    ports:
+      - "5000"
+      - "5001"
+      - "22"
+    networks:
+      - swarm-network
+    command: python o4s/racer2.py
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+  master:
+    image: master
+    volumes:
+      - .:/efs/
+    ports:
+      - "5000"
+      - "5001"
+      - "22"
+    networks:
+      - swarm-network
+    depends_on:
+      - racer2
+      - racer1
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+
+
+networks:
+  swarm-network:
+    external: False
